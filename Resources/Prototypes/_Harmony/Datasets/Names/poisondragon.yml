@@ -1,0 +1,11 @@
+﻿- type: localizedDataset
+  id: NamesPoisonDragon
+  values:
+    prefix: names-poisondragon-dataset-
+    count: 30
+
+- type: localizedDataset
+  id: NamesPoisonDragonTitle
+  values:
+    prefix: names-poisondragon-title-dataset-
+    count: 35

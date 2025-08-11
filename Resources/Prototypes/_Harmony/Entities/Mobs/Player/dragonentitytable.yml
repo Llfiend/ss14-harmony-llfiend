@@ -1,0 +1,12 @@
+﻿- type: entityTable
+  id: DragonTable
+  table: !type:GroupSelector
+    children:
+    - !type:AllSelector
+      weight: 1
+      children:
+      - id: MobDragon
+    - !type:AllSelector
+      weight: 1
+      children:
+      - id: MobPoisonDragon

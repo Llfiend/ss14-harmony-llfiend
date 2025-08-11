@@ -172,7 +172,7 @@ namespace Content.Shared.Damage
         ///     null if the user had no applicable components that can take damage.
         /// </returns>
         public DamageSpecifier? TryChangeDamage(EntityUid? uid, DamageSpecifier damage, bool ignoreResistances = false,
-            bool interruptsDoAfters = true, DamageableComponent? damageable = null, EntityUid? origin = null)
+            bool interruptsDoAfters = true, DamageableComponent? damageable = null, EntityUid? origin = null, bool isReagentDamage = false)
         {
             if (!uid.HasValue || !_damageableQuery.Resolve(uid.Value, ref damageable, false))
             {
@@ -191,26 +191,53 @@ namespace Content.Shared.Damage
             if (before.Cancelled)
                 return null;
 
-            // Apply resistances
-            if (!ignoreResistances)
+            // Apply resistances, start of Harmony change
+            if (damageable.DamageModifierSetId != null &&
+                _prototypeManager.TryIndex<DamageModifierSetPrototype>(damageable.DamageModifierSetId, out var modifierSet))
             {
-                if (damageable.DamageModifierSetId != null &&
-                    _prototypeManager.TryIndex<DamageModifierSetPrototype>(damageable.DamageModifierSetId, out var modifierSet))
+                if (isReagentDamage)
                 {
-                    // TODO DAMAGE PERFORMANCE
-                    // use a local private field instead of creating a new dictionary here..
-                    damage = DamageSpecifier.ApplyModifierSet(damage, modifierSet);
+                    if (modifierSet.ReagentCoefficients != null && modifierSet.ReagentCoefficients.Count > 0)
+                    {
+                        foreach (var type in damage.DamageDict.Keys.ToList())
+                        {
+                            var val = damage.DamageDict[type];
+                            // Only affect damage
+                            if (val <= 0)
+                                continue;
+
+                            if (modifierSet.ReagentCoefficients.TryGetValue(type, out var coeff))
+                            {
+                                if (coeff == 0f)
+                                    damage.DamageDict[type] = FixedPoint2.Zero;
+                                else
+                                    damage.DamageDict[type] *= coeff;
+                            }
+                        }
+                    }
+                    else if (!ignoreResistances)
+                    {
+                        damage = DamageSpecifier.ApplyModifierSet(damage, modifierSet);
+                    }
                 }
-
-                var ev = new DamageModifyEvent(damage, origin);
-                RaiseLocalEvent(uid.Value, ev);
-                damage = ev.Damage;
-
-                if (damage.Empty)
+                else
                 {
-                    return damage;
+                    if (!ignoreResistances)
+                    {
+                        damage = DamageSpecifier.ApplyModifierSet(damage, modifierSet);
+                    }
                 }
             }
+
+            var ev = new DamageModifyEvent(damage, origin);
+            RaiseLocalEvent(uid.Value, ev);
+            damage = ev.Damage;
+
+            if (damage.Empty)
+            {
+                return damage;
+            }
+            // End of Harmony change
 
             damage = ApplyUniversalAllModifiers(damage);
 

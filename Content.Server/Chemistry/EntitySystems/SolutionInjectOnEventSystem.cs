@@ -1,15 +1,20 @@
+using Content.Server._Harmony.Chemistry.Events;
 using Content.Server.Body.Systems;
 using Content.Server.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Body.Components;
 using Content.Shared.Chemistry.Events;
+using Content.Shared.FixedPoint;
 using Content.Shared.Inventory;
 using Content.Shared.Popups;
 using Content.Shared.Projectiles;
 using Content.Shared.Tag;
 using Content.Shared.Weapons.Melee.Events;
+using Robust.Server.GameObjects;
 using Robust.Shared.Collections;
 using Robust.Shared.Prototypes;
+using Content.Server.Explosion.EntitySystems;
+using Content.Shared.Chemistry.Components.SolutionManager;
 
 namespace Content.Server.Chemistry.EntitySystems;
 
@@ -24,6 +29,8 @@ public sealed class SolutionInjectOnCollideSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainer = default!;
     [Dependency] private readonly TagSystem _tag = default!;
+    [Dependency] private readonly TransformSystem _transform = default!; // Harmony
+    [Dependency] private readonly ExplosionSystem _explosion = default!; // Harmony
 
     private static readonly ProtoId<TagPrototype> HardsuitTag = "Hardsuit";
 
@@ -34,6 +41,7 @@ public sealed class SolutionInjectOnCollideSystem : EntitySystem
         SubscribeLocalEvent<SolutionInjectOnEmbedComponent, EmbedEvent>(HandleEmbed);
         SubscribeLocalEvent<MeleeChemicalInjectorComponent, MeleeHitEvent>(HandleMeleeHit);
         SubscribeLocalEvent<SolutionInjectWhileEmbeddedComponent, InjectOverTimeEvent>(OnInjectOverTime);
+        SubscribeLocalEvent<TransformComponent, SolutionInjectOnExplosionEvent>(OnExplosionInject); // Harmony
     }
 
     private void HandleProjectileHit(Entity<SolutionInjectOnProjectileHitComponent> entity, ref ProjectileHitEvent args)
@@ -63,6 +71,40 @@ public sealed class SolutionInjectOnCollideSystem : EntitySystem
     {
         TryInjectTargets(injectorEntity, [target], source);
     }
+
+    // Harmony, explosion reagent injections
+    private void OnExplosionInject(Entity<TransformComponent> target, ref SolutionInjectOnExplosionEvent args)
+    {
+        if (args.Reagents.Count == 0)
+            return;
+
+        var explosionRadius = _explosion.IntensityToRadius(args.TotalIntensity, args.Slope, args.MaxIntensity);
+        var dist = (args.Epicenter.Position - _transform.GetWorldPosition(target.Owner)).Length();
+
+        if (dist > explosionRadius)
+            return;
+
+        var falloff = MathF.Max(0f, 1f - dist / explosionRadius);
+
+        if (_solutionContainer.TryGetInjectableSolution(
+                new Entity<InjectableSolutionComponent?, SolutionContainerManagerComponent?>(target.Owner, null, null),
+                out var targetSolEnt, out _))
+        {
+            foreach (var reagent in args.Reagents)
+            {
+                var scaledAmount = FixedPoint2.New(reagent.Quantity.Float() * falloff);
+                if (scaledAmount > FixedPoint2.Zero)
+                {
+                    _solutionContainer.TryAddReagent(
+                        targetSolEnt.Value,
+                        reagent.Reagent,
+                        scaledAmount,
+                        out _);
+                }
+            }
+        }
+    }
+    // End Harmony Change
 
     /// <summary>
     /// Filters <paramref name="targets"/> for valid targets and tries to inject a portion of <see cref="BaseSolutionInjectOnEventComponent.Solution"/> into

@@ -1,0 +1,30 @@
+﻿- type: reagent
+  id: Dracotoxin
+  name: reagent-name-dracotoxin
+  group: Toxins
+  desc: reagent-desc-dracotoxin
+  physicalDesc: reagent-physical-desc-translucent
+  color: "#620E86"
+  metabolisms:
+    Poison:
+      metabolismRate: 0.5
+      effects:
+      - !type:HealthChange
+        conditions:
+        - !type:TotalDamage
+          max: 150
+        damage:
+          types:
+            Blunt: 0.5
+            Poison: 0.5
+      - !type:HealthChange
+        conditions:
+        - !type:ReagentThreshold
+          min: 5
+        - !type:TotalDamage
+          max: 150
+        damage:
+          types:
+            Caustic: 0.5
+      - !type:TakeStaminaDamage
+        amount: 4.5

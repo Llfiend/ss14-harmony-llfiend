@@ -172,7 +172,7 @@
   - type: SpaceSpawnRule
     spawnDistance: 0
   - type: AntagSpawner
-    prototype: MobDragon
+    table: DragonTable # Harmony change to table
   - type: DragonRule
   - type: AntagObjectives
     objectives:

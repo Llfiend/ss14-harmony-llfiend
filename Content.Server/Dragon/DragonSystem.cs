@@ -1,7 +1,7 @@
 using Content.Server.Objectives.Components;
 using Content.Server.Objectives.Systems;
 using Content.Server.Popups;
-using Content.Server.Roles;
+// using Content.Server.Roles;
 using Content.Shared.Actions;
 using Content.Shared.Dragon;
 using Content.Shared.Maps;
@@ -13,7 +13,7 @@ using Content.Shared.Movement.Systems;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Zombies;
 using Robust.Shared.Audio.Systems;
-using Robust.Shared.Map;
+// using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 
 namespace Content.Server.Dragon;
@@ -269,7 +269,7 @@ public sealed partial class DragonSystem : EntitySystem
             return;
 
         // do reset the rift count since crew destroyed the rift, not deleted by the dragon dying.
-        DeleteRifts(uid, true, comp);
+        // DeleteRifts(uid, true, comp); - Harmony change
 
         // We can't predict the rift being destroyed anyway so no point adding weakened to shared.
         comp.WeakenedAccumulator = comp.WeakenedDuration;

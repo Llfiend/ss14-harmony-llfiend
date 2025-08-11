@@ -1,11 +1,13 @@
 using System.Linq;
 using System.Numerics;
+using Content.Server._Harmony.Chemistry.Components;
 using Content.Server.Administration.Logs;
 using Content.Server.Atmos.Components;
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NPC.Pathfinding;
 using Content.Shared.Camera;
 using Content.Shared.CCVar;
+using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Damage;
 using Content.Shared.Database;
 using Content.Shared.Explosion;
@@ -316,6 +318,13 @@ public sealed partial class ExplosionSystem : SharedExplosionSystem
             CanCreateVacuum = canCreateVacuum,
             Cause = cause
         };
+        // Harmony, caching reagents for injection
+        if (cause != null &&
+            EntityManager.TryGetComponent<SolutionInjectOnExplosionComponent>(cause.Value, out var injectComp))
+        {
+            boom.CachedReagents = new List<ReagentQuantity>(injectComp.Reagents);
+        }
+        // End Harmony change
         _explosionQueue.Enqueue(boom);
         _queuedExplosions.Add(boom);
     }

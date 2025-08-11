@@ -120,7 +120,8 @@ namespace Content.Shared.EntityEffects.Effects
                     args.TargetEntity,
                     damageSpec * scale,
                     IgnoreResistances,
-                    interruptsDoAfters: false);
+                    interruptsDoAfters: false,
+                    isReagentDamage: true); // Harmony
         }
     }
 }

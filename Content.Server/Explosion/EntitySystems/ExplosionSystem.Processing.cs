@@ -1,13 +1,15 @@
-using System.Linq;
+// using System.Linq;
 using System.Numerics;
+using Content.Server._Harmony.Chemistry.Events;
 using Content.Server.Atmos.EntitySystems;
-using Content.Server.Explosion.Components;
+// using Content.Server.Explosion.Components;
 using Content.Shared.CCVar;
+using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Damage;
 using Content.Shared.Database;
 using Content.Shared.Explosion;
 using Content.Shared.Explosion.Components;
-using Content.Shared.Explosion.EntitySystems;
+//  Content.Shared.Explosion.EntitySystems;
 using Content.Shared.Maps;
 using Content.Shared.Physics;
 using Content.Shared.Projectiles;
@@ -52,6 +54,11 @@ public sealed partial class ExplosionSystem
     /// These always have the same contents.
     /// </summary>
     private HashSet<QueuedExplosion> _queuedExplosions = new();
+
+    /// <summary>
+    ///  Harmony, current queued explosion for more specificity
+    /// </summary>
+    private QueuedExplosion? _currentQueuedExplosion;
 
     /// <summary>
     ///     The explosion currently being processed.
@@ -106,12 +113,16 @@ public sealed partial class ExplosionSystem
                     break;
 
                 _queuedExplosions.Remove(queued);
+                _currentQueuedExplosion = queued; // Harmony
                 _activeExplosion = SpawnExplosion(queued);
 
                 // explosion spawning can be null if something somewhere went wrong. (e.g., negative explosion
                 // intensity).
                 if (_activeExplosion == null)
+                {
+                    _currentQueuedExplosion = queued; // Harmony
                     continue;
+                }
 
                 // just a lil nap
                 if (SleepNodeSys)
@@ -143,6 +154,7 @@ public sealed partial class ExplosionSystem
                 comp.Lifetime = _cfg.GetCVar(CCVars.ExplosionPersistence);
                 _appearance.SetData(_activeExplosion.VisualEnt, ExplosionAppearanceData.Progress, int.MaxValue);
                 _activeExplosion = null;
+                _currentQueuedExplosion = null; // Harmony
             }
 #if EXCEPTION_TOLERANCE
             }
@@ -475,6 +487,29 @@ public sealed partial class ExplosionSystem
                 _flammableSystem.Ignite(uid, uid, flammable);
             }
         }
+
+        // Harmony, reagent injection
+        if (_currentQueuedExplosion != null &&
+            cause != null &&
+            !EntityManager.IsQueuedForDeletion(cause.Value) &&
+            _currentQueuedExplosion.CachedReagents is { Count: > 0 } reagents)
+        {
+            EntityUid targetEntity = _mapManager.TryFindGridAt(epicenter, out var gridUid, out _)
+                ? gridUid
+                : _mapManager.GetMapEntityId(epicenter.MapId);
+
+            var entityCoords = new EntityCoordinates(targetEntity, epicenter.Position);
+
+            var injectEvent = new SolutionInjectOnExplosionEvent(
+                entityCoords,
+                _currentQueuedExplosion.TotalIntensity,
+                _currentQueuedExplosion.Slope,
+                _currentQueuedExplosion.MaxTileIntensity,
+                _currentQueuedExplosion.CachedReagents
+            );
+            RaiseLocalEvent(uid, ref injectEvent);
+        }
+        // End Harmony Change
 
         // throw
         if (xform != null // null implies anchored or in a container
@@ -921,4 +956,5 @@ public sealed class QueuedExplosion(ExplosionPrototype proto)
     public int MaxTileBreak;
     public bool CanCreateVacuum;
     public EntityUid? Cause; // The entity that exploded, for logging purposes.
+    public List<ReagentQuantity>? CachedReagents; // Harmony, for caching reagents
 }

@@ -1,0 +1,17 @@
+﻿- type: palette
+  id: PoisonDragonPalette
+  name: Poison Dragon Palette
+  colors:
+    poisondragon1: "#228b22"
+    poisondragon2: "#91b6c2"
+    poisondragon3: "#0b5c75"
+    poisondragon4: "#6a0dad"
+    poisondragon5: "#32cd32"
+    poisondragon6: "#22c4f5"
+    poisondragon7: "#7cfc00"
+    poisondragon8: "#cd59ff"
+    poisondragon9: "#849c5a"
+    poisondragon10: "#50574f"
+    poisondragon11: "#e0e647"
+    poisondragon12: "#838708"
+    poisondragon13: "#4a4185"

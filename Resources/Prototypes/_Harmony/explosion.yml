@@ -6,3 +6,13 @@
   lightColor: "#ff4300"
   fireColor: "#ff4300"
   texturePath: /Textures/Effects/fire.rsi
+
+- type: explosion
+  id: PoisonExplosionHarmony
+  damagePerIntensity:
+    types:
+      Blunt: 2
+      Heat: 2
+  lightColor: "#620E86"
+  fireColor: "#620E86"
+  texturePath: /Textures/Effects/fire_greyscale.rsi

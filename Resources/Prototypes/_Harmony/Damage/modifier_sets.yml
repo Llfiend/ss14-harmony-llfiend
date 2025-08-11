@@ -4,3 +4,22 @@
     Blunt: 1.15
     Cold: 0.6
     Heat: 1.1
+
+- type: damageModifierSet
+  id: PoisonDragon
+  coefficients:
+    Poison: 0 # Thematically accurate
+    Caustic: 0.5 # Caustic and Cellular are also reduced to half to showcase it's built resistances against acids and poisons
+    Cellular: 0.5
+  reagentCoefficients:
+    Poison: 0
+    Caustic: 0.5
+    Cellular: 0.5
+    Asphyxiation: 0 # If dragons take asphyx damage (Lexorin, etc) they can't heal it
+
+- type: damageModifierSet
+  id: Dragon
+  coefficients:
+    Heat: 0.75 # Fire breathing dragon now takes 25% less heat damage overall
+  reagentCoefficients:
+    Asphyxiation: 0

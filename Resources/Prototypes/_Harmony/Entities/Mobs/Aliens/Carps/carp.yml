@@ -1,0 +1,27 @@
+﻿- type: entity
+  id: MobCarpPoisonDragon
+  parent: MobCarpDragon
+  name: poison dragon carp
+  description: A venomous carp called forth by a poison dragon.
+  components:
+  - type: Sprite
+    sprite: _Harmony/Mobs/Aliens/Carps/carppoison.rsi
+    layers:
+    - map: [ "enum.DamageStateVisualLayers.Base" ]
+      state: alive
+    - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
+      state: mouth
+      shader: unshaded
+  - type: SolutionContainerManager
+    solutions:
+      toxin:
+        reagents:
+        - ReagentId: Dracotoxin
+          Quantity: 99999
+  - type: MeleeChemicalInjector
+    transferAmount: 0.25
+    solution: toxin
+    pierceArmor: true
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: PoisonDragon

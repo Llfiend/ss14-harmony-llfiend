@@ -1,4 +1,5 @@
-using Content.Server.Antag;
+// using Content.Server.Antag;
+using Content.Shared.EntityTable;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Antag.Components;
@@ -12,6 +13,9 @@ public sealed partial class AntagSpawnerComponent : Component
     /// <summary>
     /// The entity to spawn.
     /// </summary>
-    [DataField(required: true)]
-    public EntProtoId Prototype = string.Empty;
+    [DataField("prototype")]
+    public EntProtoId? Prototype = null;
+    // Harmony, updated to allow rolling from entity tables
+    [DataField("table")]
+    public ProtoId<EntityTablePrototype>? TableId = null;
 }

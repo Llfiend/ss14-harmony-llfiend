@@ -19,3 +19,35 @@
   - type: StunOnCollide
     stunAmount: 1
     knockdownAmount: 1
+
+- type: entity
+  categories: [ HideSpawnMenu ]
+  parent: BaseBulletTrigger
+  id: ProjectileDragonsPoisonBreath
+  name: dragon's poison breath
+  description: I wonder if my hardsuit will help.
+  components:
+  - type: PointLight
+    color: "#620E86"
+    radius: 2.0
+    energy: 3.0
+  - type: Sprite
+    sprite: _Harmony/Objects/Weapons/Guns/Projectiles/magic.rsi
+    layers:
+    - state: fireballpoison
+      shader: unshaded
+  - type: ExplodeOnTrigger
+  - type: Explosive
+    explosionType: PoisonExplosionHarmony
+    totalIntensity: 15
+    intensitySlope: 1
+    maxIntensity: 4
+    canCreateVacuum: false
+    deleteAfterExplosion: false
+    repeatable: false
+  - type: TimedDespawn
+    lifetime: 5
+  - type: SolutionInjectOnExplosion
+    reagents:
+    - ReagentId: Dracotoxin
+      Quantity: 10

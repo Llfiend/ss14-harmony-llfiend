@@ -23,5 +23,10 @@ namespace Content.Shared.Damage
 
         [DataField("flatReductions", customTypeSerializer: typeof(PrototypeIdDictionarySerializer<float, DamageTypePrototype>))]
         public Dictionary<string, float> FlatReduction = new();
+
+        // Harmony change
+        [DataField("reagentCoefficients", customTypeSerializer: typeof(PrototypeIdDictionarySerializer<float, DamageTypePrototype>))]
+        public Dictionary<string, float> ReagentCoefficients = new();
+        // End of Harmony change
     }
 }
