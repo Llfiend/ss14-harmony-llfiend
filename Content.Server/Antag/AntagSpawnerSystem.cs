@@ -1,7 +1,7 @@
-using System.Linq;
+using System.Linq; // Harmony
 using Content.Server.Antag.Components;
-using Content.Shared.EntityTable;
-using Robust.Shared.Prototypes;
+using Content.Shared.EntityTable; // Harmony
+using Robust.Shared.Prototypes; // Harmony
 
 namespace Content.Server.Antag;
 

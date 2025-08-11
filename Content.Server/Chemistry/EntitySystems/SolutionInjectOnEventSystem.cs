@@ -1,20 +1,20 @@
-using Content.Server._Harmony.Chemistry.Events;
+using Content.Server._Harmony.Chemistry.Events; // Harmony
 using Content.Server.Body.Systems;
 using Content.Server.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Body.Components;
 using Content.Shared.Chemistry.Events;
-using Content.Shared.FixedPoint;
+using Content.Shared.FixedPoint; // Harmony
 using Content.Shared.Inventory;
 using Content.Shared.Popups;
 using Content.Shared.Projectiles;
 using Content.Shared.Tag;
 using Content.Shared.Weapons.Melee.Events;
-using Robust.Server.GameObjects;
+using Robust.Server.GameObjects; // Harmony
 using Robust.Shared.Collections;
 using Robust.Shared.Prototypes;
-using Content.Server.Explosion.EntitySystems;
-using Content.Shared.Chemistry.Components.SolutionManager;
+using Content.Server.Explosion.EntitySystems; // Harmony
+using Content.Shared.Chemistry.Components.SolutionManager; // Harmony
 
 namespace Content.Server.Chemistry.EntitySystems;
 

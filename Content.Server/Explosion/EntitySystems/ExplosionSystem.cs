@@ -1,13 +1,13 @@
 using System.Linq;
 using System.Numerics;
-using Content.Server._Harmony.Chemistry.Components;
+using Content.Server._Harmony.Chemistry.Components; // Harmony
 using Content.Server.Administration.Logs;
 using Content.Server.Atmos.Components;
 using Content.Server.NodeContainer.EntitySystems;
 using Content.Server.NPC.Pathfinding;
 using Content.Shared.Camera;
 using Content.Shared.CCVar;
-using Content.Shared.Chemistry.Reagent;
+using Content.Shared.Chemistry.Reagent; // Harmony
 using Content.Shared.Damage;
 using Content.Shared.Database;
 using Content.Shared.Explosion;

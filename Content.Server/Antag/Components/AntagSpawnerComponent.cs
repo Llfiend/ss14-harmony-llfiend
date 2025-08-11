@@ -1,5 +1,5 @@
-// using Content.Server.Antag;
-using Content.Shared.EntityTable;
+// using Content.Server.Antag; // Harmony
+using Content.Shared.EntityTable; // Harmony
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Antag.Components;

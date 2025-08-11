@@ -1,7 +1,7 @@
 ﻿- type: entity
   id: MobCarpPoisonDragon
   parent: MobCarpDragon
-  name: poison dragon carp
+  name: Dracocarp
   description: A venomous carp called forth by a poison dragon.
   components:
   - type: Sprite

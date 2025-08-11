@@ -1,15 +1,15 @@
-// using System.Linq;
+// using System.Linq; Harmony
 using System.Numerics;
-using Content.Server._Harmony.Chemistry.Events;
+using Content.Server._Harmony.Chemistry.Events; // Harmony
 using Content.Server.Atmos.EntitySystems;
-// using Content.Server.Explosion.Components;
+// using Content.Server.Explosion.Components; // Harmony
 using Content.Shared.CCVar;
-using Content.Shared.Chemistry.Reagent;
+using Content.Shared.Chemistry.Reagent; // Harmony
 using Content.Shared.Damage;
 using Content.Shared.Database;
 using Content.Shared.Explosion;
 using Content.Shared.Explosion.Components;
-//  Content.Shared.Explosion.EntitySystems;
+//  Content.Shared.Explosion.EntitySystems; // Harmony
 using Content.Shared.Maps;
 using Content.Shared.Physics;
 using Content.Shared.Projectiles;

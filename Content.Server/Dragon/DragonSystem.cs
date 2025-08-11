@@ -1,7 +1,7 @@
 using Content.Server.Objectives.Components;
 using Content.Server.Objectives.Systems;
 using Content.Server.Popups;
-// using Content.Server.Roles;
+// using Content.Server.Roles; // Harmony
 using Content.Shared.Actions;
 using Content.Shared.Dragon;
 using Content.Shared.Maps;
@@ -13,7 +13,7 @@ using Content.Shared.Movement.Systems;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Zombies;
 using Robust.Shared.Audio.Systems;
-// using Robust.Shared.Map;
+// using Robust.Shared.Map; // Harmony
 using Robust.Shared.Map.Components;
 
 namespace Content.Server.Dragon;
