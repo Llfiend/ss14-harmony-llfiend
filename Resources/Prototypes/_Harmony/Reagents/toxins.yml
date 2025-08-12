@@ -10,9 +10,6 @@
       metabolismRate: 0.5
       effects:
       - !type:HealthChange
-        conditions:
-        - !type:TotalDamage
-          max: 150
         damage:
           types:
             Blunt: 0.5
@@ -21,8 +18,6 @@
         conditions:
         - !type:ReagentThreshold
           min: 5
-        - !type:TotalDamage
-          max: 150
         damage:
           types:
             Caustic: 0.5
