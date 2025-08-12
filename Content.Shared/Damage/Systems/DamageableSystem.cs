@@ -218,6 +218,14 @@ namespace Content.Shared.Damage
                     else if (!ignoreResistances)
                     {
                         damage = DamageSpecifier.ApplyModifierSet(damage, modifierSet);
+                        var ev = new DamageModifyEvent(damage, origin);
+                        RaiseLocalEvent(uid.Value, ev);
+                        damage = ev.Damage;
+
+                        if (damage.Empty)
+                        {
+                            return damage;
+                        }
                     }
                 }
                 else
@@ -225,17 +233,16 @@ namespace Content.Shared.Damage
                     if (!ignoreResistances)
                     {
                         damage = DamageSpecifier.ApplyModifierSet(damage, modifierSet);
+                        var ev = new DamageModifyEvent(damage, origin);
+                        RaiseLocalEvent(uid.Value, ev);
+                        damage = ev.Damage;
+
+                        if (damage.Empty)
+                        {
+                            return damage;
+                        }
                     }
                 }
-            }
-
-            var ev = new DamageModifyEvent(damage, origin);
-            RaiseLocalEvent(uid.Value, ev);
-            damage = ev.Damage;
-
-            if (damage.Empty)
-            {
-                return damage;
             }
             // End of Harmony change
 
