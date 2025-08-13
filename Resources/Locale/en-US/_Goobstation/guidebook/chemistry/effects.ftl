@@ -10,3 +10,4 @@ reagent-effect-guidebook-deal-stamina-damage =
     *[-1] heal
                 }
         } { $amount } Stamina
+# Harmony, updated to function without unused Goob systems
