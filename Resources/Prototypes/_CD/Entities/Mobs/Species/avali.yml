@@ -74,14 +74,14 @@
       265: 0.8
       251: 0.6
       226: 0.4
-  #- type: ThermalRegulator
-    #metabolismHeat: 400 # icebirb go brrr
-    #radiatedHeat: 100
-    #implicitHeatRegulation: 500
-    #sweatHeatRegulation: 2000
-    #shiveringHeatRegulation: 2000
-    #normalBodyTemperature: 296.15
-    #thermalRegulationTemperatureThreshold: 10
+  - type: ThermalRegulator
+    metabolismHeat: 400 # icebirb go brrr
+    radiatedHeat: 100
+    implicitHeatRegulation: 500
+    sweatHeatRegulation: 2000
+    shiveringHeatRegulation: 2000
+    normalBodyTemperature: 296.15
+    thermalRegulationTemperatureThreshold: 10
 # Start harmony change
 #  - type: Metabolizer
 #    solutionOnBody: false
