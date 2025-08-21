@@ -55,7 +55,7 @@
   - type: Flammable
     damage:
       types:
-        Heat: 2.25 # harmony, 4.5 -> 2.25
+        Heat: 2.25 # Harmony Change - 4.5 -> 2.25
   - type: Temperature # Moths hate the heat and thrive in the cold.
     heatDamageThreshold: 320
     coldDamageThreshold: 230
