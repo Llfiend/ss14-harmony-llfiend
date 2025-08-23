@@ -1,47 +1,12 @@
 ﻿- type: entity
-  parent: [ SimpleSpaceMobBase, FlyingMobBase ]
-  id: BaseMobPoisonDragon
+  parent: BaseMobDragon
+  id: MobPoisonDragon
   suffix: "Harmony"
   name: poison dragon
-  description: A flying leviathan, loosely related to space carps.
-  abstract: true
   components:
-  - type: Bloodstream
-    bloodMaxVolume: 650
-  - type: GhostRole
-    allowMovement: true
-    allowSpeech: true
-    makeSentient: true
-    name: ghost-role-information-space-dragon-name
-    description: ghost-role-information-space-dragon-description
-    rules: ghost-role-information-space-dragon-rules
-    mindRoles:
-    - MindRoleGhostRoleTeamAntagonist
-    raffle:
-      settings: default
-  - type: GhostTakeoverAvailable
-  - type: HTN
-    rootTask:
-      task: XenoCompound
-    blackboard:
-      NavInteract: !type:Bool
-        true
-      NavPry: !type:Bool
-        true
-      NavSmash: !type:Bool
-        true
-  - type: NpcFactionMember
-    factions:
-    - Dragon
-  - type: Speech
-    speechVerb: LargeMob
-  - type: CombatMode
-  - type: MobMover
-  - type: InputMover
-  - type: MovementSpeedModifier
-    baseWalkSpeed: 3
-    baseSprintSpeed: 5
-    baseWeightlessModifier: 1.5
+  - type: Dragon
+    spawnRiftAction: ActionSpawnRiftPoisonDragon
+    riftPrototype: CarpPoisonRift
   - type: RandomSprite
     available:
     - enum.DamageStateVisualLayers.Base:
@@ -55,85 +20,14 @@
     - map: [ "enum.DamageStateVisualLayers.BaseUnshaded" ]
       state: alive-unshaded
       shader: unshaded
-  - type: Appearance
-  - type: DamageStateVisuals
-    states:
-      Alive:
-        Base: alive
-        BaseUnshaded: alive-unshaded
-      Critical:
-        Base: crit
-      Dead:
-        Base: dead
-        BaseUnshaded: dead-unshaded
-  - type: Physics
-    bodyType: KinematicController
-  - type: Fixtures
-    fixtures:
-      fix1:
-        shape:
-          !type:PhysShapeCircle
-          radius: 0.40
-        density: 100
-        mask:
-        - FlyingMobMask
-        layer:
-        - FlyingMobLayer
-  - type: MobState
-  - type: MobStateActions
-    actions:
-      Critical:
-      - ActionCritSuccumb
-      - ActionCritLastWords
-  - type: MobThresholds
-    thresholds:
-      0: Alive
-      450: Critical
-      500: Dead
-  - type: SlowOnDamage
-    speedModifierThresholds:
-      250: 0.7
-      400: 0.5
   - type: Damageable
     damageContainer: Biological
     damageModifierSet: PoisonDragon
-  - type: StatusEffects
-    allowed:
-    - SlowedDown
-    - Stutter
-    - Electrocution
-    - TemporaryBlindness
-    - Pacified
-    - RadiationProtection
-    - Adrenaline
-  - type: Temperature
-    heatDamageThreshold: 800
-  - type: Metabolizer
-    solutionOnBody: false
-    updateInterval: 0.25
-    metabolizerTypes: [ Dragon ]
-    groups:
-    - id: Medicine
-    - id: Poison
-  - type: Butcherable
-    spawned:
-    - id: FoodMeatDragon
-      amount: 2
-  - type: InteractionPopup
-    successChance: 0.25
-    interactSuccessString: petting-success-dragon
-    interactFailureString: petting-failure-dragon
-    interactFailureSound:
-      path: /Audio/Animals/space_dragon_roar.ogg
-    soundPerceivedByOthers: false
-  - type: MeleeWeapon
-    altDisarm: false
-    soundHit:
-      path: /Audio/Weapons/Xeno/alien_claw_flesh3.ogg
+  - type: Flammable
     damage:
       types:
-        Piercing: 15
-        Slash: 15
+        Heat: 1.0
+  - type: StatusEffects
   - type: SolutionContainerManager
     solutions:
       toxin:
@@ -144,46 +38,10 @@
     transferAmount: 0.75
     solution: toxin
     pierceArmor: true
-  - type: Devourer
-    foodPreferenceWhitelist:
-      components:
-      - HumanoidAppearance
-    stomachStorageWhitelist:
-      components:
-      - MobState
-    chemical: Ichor
-    healRate: 7.5
-    whitelist:
-      components:
-      - MobState
-      - Door
-      tags:
-      - Wall
-  - type: Tag
-    tags:
-    - CannotSuicide
-    - DoorBumpOpener
-  - type: Puller
-    needsHands: false
   - type: RandomMetadata
     nameSegments:
     - NamesPoisonDragon
     - NamesPoisonDragonTitle
-    nameFormat: name-format-dragon
-  - type: Prying
-    pryPowered: true
-    force: true
-    speedModifier: 2.5
-    useSound:
-      path: /Audio/Items/crowbar.ogg
-
-- type: entity
-  parent: BaseMobPoisonDragon
-  id: MobPoisonDragon
-  components:
-  - type: Dragon
-    spawnRiftAction: ActionSpawnRiftPoisonDragon
-    riftPrototype: CarpPoisonRift
   - type: GhostRole
     mindRoles:
     - MindRoleDragon
@@ -228,28 +86,6 @@
     priority: 3
   - type: InstantAction
     event: !type:DragonSpawnRiftActionEvent
-
-- type: entity
-  parent: BaseAction
-  id: ActionDevourPoisonDragon
-  name: "[color=red]Devour[/color]"
-  description: Attempt to break a structure with your jaws or swallow a creature.
-  components:
-  - type: Action
-    icon: { sprite : Interface/Actions/devour.rsi, state: icon }
-    iconOn: { sprite : Interface/Actions/devour.rsi, state: icon-on }
-    itemIconStyle: BigAction
-    priority: 1
-  - type: TargetAction
-  - type: EntityTargetAction
-    canTargetSelf: false
-    whitelist:
-      components:
-      - MobState
-      - Door
-      tags:
-      - Wall
-    event: !type:DevourActionEvent
 
 - type: entity
   parent: BaseAction
